@@ -45,3 +45,32 @@ const studyRecommendationsLinks = {
     "Tailwind CSS": "https://tailwindcss.com/docs",
     "Testes Unitários (Jest)": "https://jestjs.io/docs/getting-started"
 };
+
+class Job {
+    constructor(jobData) {
+        this.company = jobData.company;
+        this.position = jobData.position;
+        this.requirements = jobData.requirements;
+    }
+
+    jobDetails() {
+        return `${this.position} na empresa ${this.company}`;
+    }
+
+    missingSkills(candidateSkills) {
+        return this.requirements.filter(
+            (req) => !candidateSkills.some((skill) => skill === req)
+        );
+    }
+}
+
+class TechJob extends Job {
+    constructor(jobData) {
+        super(jobData);
+        this.modality = jobData.modality || "Presencial";
+    }
+
+    jobDetails() {
+        return `${super.jobDetails()} [Modalidade: ${this.modality}]`;
+    }
+}
