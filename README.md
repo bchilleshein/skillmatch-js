@@ -83,6 +83,6 @@ No código, a função `loadJobs()` atua simulando o **Servidor** (retornando um
 
 ## Links
 
-* **Vídeo de Apresentação:** 
+* **Vídeo de Apresentação:** https://www.loom.com/share/63bf129acaed438f8324b99592b18d51
 
 * **Quadro Kanban de Tarefas:** https://trello.com/invite/b/6a727773429a81c19c255f07/ATTI8f4074ad55e41df7543d825e592acc23B0616F89/skillmatch-js-simulador-de-compatibilidade-com-vaga-front-end-junior
