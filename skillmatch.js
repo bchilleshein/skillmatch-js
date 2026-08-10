@@ -108,7 +108,12 @@ function processJobReport(job, candidateSkills, callback) {
 }
 
 function studyRecommendation(analyzedJobs) {
-    const allMissing = analyzedJobs.flatMap((report) => report.missing);
+    const allMissing = [];
+    for (const report of analyzedJobs) {
+    for (const skill of report.missing) {
+        allMissing.push(skill);
+    }
+}
 
     if (allMissing.length === 0) {
         return "O candidato(a) já possui todos os requisitos das vagas analisadas.";
