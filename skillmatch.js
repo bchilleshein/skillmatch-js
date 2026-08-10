@@ -156,3 +156,61 @@ function loadJobs() {
         }, 5000);
     });
 }
+
+async function run() {
+    console.log("_______________________________________________________________________");
+    console.log("PERFIL DO CANDIDATO");
+    console.log(`Nome: ${candidateProfile.name}`);
+    console.log(`Área de Interesse: ${candidateProfile.interestArea}`);
+    console.log(`Tempo de Experiência: ${candidateProfile.experienceTime}`);
+    console.log("Habilidades:");
+    candidateProfile.skills.forEach((skill) => console.log(`  - ${skill}`));
+    console.log("_______________________________________________________________________\n");
+
+    console.log("Buscando vagas no servidor...\n");
+
+    try {
+        const raw = await loadJobs();
+        
+        const jobs = raw.map((item) => new TechJob(item));
+        const analyzedJobs = [];
+
+        const nextJobNumber = createJobCounter();
+
+        const displayCallback = (item) => {
+            const jobNum = nextJobNumber();
+            console.log(`Vaga #${jobNum}: ${item.job.jobDetails()}`);
+            console.log(`Compatibilidade: ${item.matchPercentage}% | Status: ${item.classification}`);
+            console.log("Habilidades faltantes:");
+
+            if (item.missing.length === 0) {
+                console.log("  O candidato(a) já possui todos os requisitos para esta vaga.");
+            } else {      
+                item.missing.forEach((skill) => {
+                    console.log(`  - ${skill}`);
+                });
+            }
+
+            console.log("\n_______________________________________________________________________\n");
+        };
+
+        for (let i = 0; i < jobs.length; i++) {
+            const report = processJobReport(jobs[i], candidateProfile.skills, displayCallback);
+            analyzedJobs.push(report);
+        }
+
+        const bestMatch = analyzedJobs.reduce((best, current) => {
+            return current.matchPercentage > best.matchPercentage ? current : best;
+        }, analyzedJobs[0]);
+
+        console.log(`A vaga com maior compatibilidade foi a de ${bestMatch.job.jobDetails()} com ${bestMatch.matchPercentage}%.`);
+        console.log("_______________________________________________________________________\n");
+        console.log("RECOMENDAÇÃO DE ESTUDO");
+        console.log(studyRecommendation(analyzedJobs));
+
+    } catch (error) {
+        console.error("Erro ao processar:", error);
+    }
+}
+
+run();
